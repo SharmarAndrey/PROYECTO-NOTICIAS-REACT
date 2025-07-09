@@ -4,7 +4,6 @@ require_once "functions.php";
 require "conexion.php";
 require_once 'authToken.php';
 
-
 try {
     $id = intval($_POST['id']);
     if (!esTuya($id)) {
