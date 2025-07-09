@@ -3,18 +3,22 @@
 require_once 'authToken.php'; // Middleware para verificar el token de autenticación
 require_once "functions.php";
 require "conexion.php";
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST["id"]) || empty($_POST["id"])) {
+        http_response_code(400); // Faltan parámetros.
+        $errorGenerl = "No hay ID";
+        exit;
+    }
     try {
         $id = intval($_POST['id']);
         if (!esTuya($id)) {
             http_response_code(403); // Cambiado a 403 Forbidden
             $errorGenerl = "No puedes realizar esta acción";
-            header('location: noticia.php?id=' . $id . '&error=true');
             exit;
         }
         $stmt = $pdo->prepare("DELETE FROM noticias WHERE id = ?");
         $stmt->execute([$id]);
+        http_response_code(204);// No Content
         if (isset($_GET['foto']) && !empty($_GET['foto'])) {
             unlink($_GET['foto']);
         }
