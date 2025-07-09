@@ -11,9 +11,10 @@ function test_input($data)
 function esTuya($noticia)
 {
     global $pdo;
+    global $userID;
     $stmt = $pdo->prepare("SELECT user_id FROM noticias WHERE id = '$noticia' AND user_id = '".$_SESSION['id']."'");
 
-    $stmt->execute([$noticia, $_SESSION['id']]);
+    $stmt->execute([$noticia, $userID]);
     $noticia = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($noticia) {
         return true;

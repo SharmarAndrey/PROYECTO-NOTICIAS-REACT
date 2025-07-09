@@ -1,5 +1,5 @@
 <?php
-
+require_once "config.php"; // Configuración y clave secreta para JWT
 require_once "functions.php";
 require_once "conexion.php";
 require_once 'lib/JWT.php';
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'user_id' => $user['id'],
                     'exp' => time() + (60 * 60 * 24)  // 1 día
                 ];
-                $token = JWT::encode($payload, $pass, 'HS256');
+                $token = JWT::encode($payload, $hashPropio, 'HS256');
                 echo json_encode(['token' => $token, 'user' => ['id' => $user['id'], 'nombre' => $user['nombre']]]);
             }
         }
