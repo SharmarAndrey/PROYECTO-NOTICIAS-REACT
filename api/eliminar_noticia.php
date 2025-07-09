@@ -18,10 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt = $pdo->prepare("DELETE FROM noticias WHERE id = ?");
         $stmt->execute([$id]);
-        http_response_code(204);// No Content
+        
         if (isset($_GET['foto']) && !empty($_GET['foto'])) {
-            unlink($_GET['foto']);
+            if (!unlink($_GET['foto'])){
+                http_response_code(500); // Error al eliminar el archivo
+                $errorGenerl = "Error al eliminar la foto";
+                exit;
+            }
         }
+        http_response_code(204);// No Content
         // header('location: index.php');
     } catch (Exception $e) {
         http_response_code(500);
@@ -31,3 +36,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     http_response_code(405); // Método no permitido
     echo "Método no permitido";
 }
+exit;
