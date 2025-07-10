@@ -3,7 +3,6 @@
 require_once "functions.php";
 require_once "conexion.php";
 define('uploads_dir', 'uploads');
-$titulo = $user_id = $categoria = $descripcion = $insertaSuccess = $id = "";
 $errorGenerl = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

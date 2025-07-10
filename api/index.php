@@ -12,6 +12,9 @@ if (isset($_GET['categoria'])){
     $categoria = $_GET['categoria'];
     $where = "WHERE categoria = '$categoria'";
 } 
+// Añadimos la opción de filtrar una noticia concreta por su id
+// Devuelve una sola noticia igualmente dentro de un array
+// Si por algún motivo se envían ambos parámetros, se prioriza el id
 if (isset($_GET['id'])){
     $id = $_GET['id'];
     $where = "WHERE id = '$id'";
