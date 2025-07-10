@@ -1,5 +1,4 @@
 <?php
-
 require_once 'authToken.php'; // Middleware para verificar el token de autenticación
 require_once "functions.php";
 require "conexion.php";

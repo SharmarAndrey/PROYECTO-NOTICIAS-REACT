@@ -6,14 +6,16 @@ require_once "functions.php";
 $comienzo = 0;
 $num = 3;
 $where = "";
-$queryStringCategorias = '';
+
 if (isset($_GET['comienzo'])) $comienzo = $_GET['comienzo'];
 if (isset($_GET['categoria'])){
     $categoria = $_GET['categoria'];
     $where = "WHERE categoria = '$categoria'";
-    $queryStringCategorias = "&categoria=$categoria";
 } 
-
+if (isset($_GET['id'])){
+    $id = $_GET['id'];
+    $where = "WHERE id = '$id'";
+}
 $stmt = $pdo->query("SELECT * FROM noticias $where ORDER BY fecha DESC LIMIT $comienzo, $num");
 // "SELECT * FROM noticias WHERE categoria='noticias' ORDER BY fecha DESC LIMIT 0, 3"
 $noticias = $stmt->fetchAll(PDO::FETCH_ASSOC);

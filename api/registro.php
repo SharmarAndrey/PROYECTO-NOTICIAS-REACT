@@ -6,7 +6,6 @@ $errorGeneral = "";
 if ($_SERVER['REQUEST_METHOD']=='POST'){
     if (isset($_POST['password']) && isset($_POST['email']) && isset($_POST['repeatpassword']) && isset($_POST['nombre'])){
         $email = $_POST['email'];
-        
         $pass = $_POST['password'];
         $repeatpass = $_POST['repeatpassword'];
         if ($pass != $repeatpass) {
