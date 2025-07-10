@@ -2,9 +2,8 @@
 node_modules/
 build/
 dist/
-/api/conexion.php
+conexion.php
 # PHP
-vendor/
 .env
 composer.lock
 
