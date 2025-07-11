@@ -1,5 +1,6 @@
 <?php
 
+require_once "authToken.php";
 require_once "functions.php";
 require_once "conexion.php";
 define('uploads_dir', 'uploads');
@@ -9,23 +10,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!isset($_POST["id"]) || empty($_POST["id"])) {
 
-        http_response_code(400); // Faltan parámetros.
-       
-        $errorGenerl = "No hay ID";
+       $errorGenerl = "No hay ID";
         
     } else {
         /*  if (!preg_match("/^[a-zA-Z-' ]*$/", $titulo)) {
             $nombreErr = "Introduce solo letras mayúsculas o minúsculas";
-        }*/
+        } */
         $id = test_input($_POST["id"]);
         if (!esTuya($id)) {
             http_response_code(405);
-            $errorGenerl = "No puedes realizar esta acción";
+            echo "No puedes realizar esta acción";
+            exit;
         }
     }
     if (!isset($_POST["titulo"]) || empty($_POST["titulo"])) {
-
-        http_response_code(400); // Faltan parámetros.
 
         $errorGenerl = "Título ausente";
     } else {
@@ -34,16 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }*/
         $titulo = test_input($_POST["titulo"]);
     }
-    if (!isset($_POST["user_id"]) || empty($_POST["user_id"])) {
-
-        $errorGenerl = true;
-    } else {
-        /*    if (!filter_var($user_id, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "Tienes que introducir un email válido";
-        }*/
-        $user_id = test_input($_POST["user_id"]);
-    }
-
+    
     if (!isset($_POST["categoria"]) || empty($_POST["categoria"])) {
     
         $errorGenerl = "Categoría";
@@ -62,8 +51,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }*/
         $descripcion = test_input($_POST["descripcion"]);
     }
-    $foto = $_POST["fotoAntigua"];
-    if ($_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+     if (!isset($_POST["fotoAntigua"]) || empty($_POST["fotoAntigua"])) {
+   
+        $errorGenerl = "error en la descripción";
+    } else {
+        /*   if (!filter_var($enlace, FILTER_VALIDATE_URL)) {
+            $descripcionErr = "Tienes que introducir un descripcion válido";
+        }*/
+         $foto = $_POST["fotoAntigua"];
+    }
+   
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
         $foto = $_FILES["foto"];
         $rutaTemporal = $foto['tmp_name'];
         $foto = uploads_dir . "/" . uniqid() . "-" . basename($foto['name']);
@@ -73,6 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $errorGenerl = "Hubo algún error al subir la imagen";
         }
+        // Si el nombre no es una categoría, la eliminaríamos
+        // hacer select de las categorías
+        // unlink($_POST["fotoAntigua"]);
     }
     if (!$errorGenerl) {
         try {
@@ -81,15 +82,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         id = ?
                      ";
             $stmt = $pdo->prepare($query);
-            $stmt->execute([$titulo, $descripcion, $categoria, $user_id, $foto, $id]);
+            $stmt->execute([$titulo, $descripcion, $categoria, $userID, $foto, $id]);
             // Variable declarada al principio como "
-            $titulo = $user_id = $categoria = $descripcion = "";
+            echo json_encode([$titulo, $descripcion, $categoria, $userID, $foto, $id]);
         } catch (Exception $e) {
             // Variable declarada al principio como ""
-          
+            http_response_code(500);
             $errorGenerl = $e;
+            exit;
         }
+    }else{
+        http_response_code(400);
+        echo $errorGenerl;
+        exit;
     }
 } else{
+    http_response_code(405);
     $errorGenerl = "No puedes realizar esta acción";
 }
+exit;

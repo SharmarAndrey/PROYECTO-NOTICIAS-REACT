@@ -7,9 +7,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-
-
-
 $errorGeneral = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['password']) && isset($_POST['email'])) {
