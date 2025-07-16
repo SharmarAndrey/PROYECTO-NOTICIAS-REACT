@@ -18,7 +18,11 @@ export default function NoticiasLista() {
       if (data.length === 0) {
         setHayMas(false);
       } else {
-        setNoticias((prev) => [...prev, ...data]);
+        setNoticias((prev) => {
+          // Evitar duplicados
+          const nuevos = data.filter(n => !prev.some(p => p.id === n.id));
+          return [...prev, ...nuevos];
+        });
         setComienzo(comienzo + data.length);
       }
     } catch (err) {
@@ -28,8 +32,15 @@ export default function NoticiasLista() {
     setLoading(false);
   };
 
+  let mounted = true;
   useEffect(() => {
-    cargarNoticias();
+
+    if (mounted) {
+      cargarNoticias();
+    }
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
