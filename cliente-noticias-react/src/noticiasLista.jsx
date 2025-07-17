@@ -1,5 +1,5 @@
 // src/NoticiasLista.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function NoticiasLista() {
   const [noticias, setNoticias] = useState([]);
@@ -45,6 +45,27 @@ export default function NoticiasLista() {
     };
   }, []);
 
+  // Usamos un ref para el elemento de carga
+  const loader = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hayMas && !loading) {
+          cargarNoticias();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    const el = loader.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, [loader, hayMas, loading]);
+
   return (
     <div className="p-4 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">📰 Últimas Noticias</h1>
@@ -74,15 +95,9 @@ export default function NoticiasLista() {
         ))}
       </div>
 
-      {hayMas && (
-        <button
-          onClick={cargarNoticias}
-          className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? "Cargando..." : "Cargar más"}
-        </button>
-      )}
+      <div ref={loader} className="h-12 flex items-center justify-center">
+        {loading && <p className="text-gray-500">Cargando...</p>}
+      </div>
     </div>
   );
 }
