@@ -19,7 +19,7 @@ if (isset($_GET['id'])){
     $id = $_GET['id'];
     $where = "WHERE id = '$id'";
 }
-$stmt = $pdo->query("SELECT * FROM noticias $where ORDER BY fecha DESC LIMIT $comienzo, $num");
+$stmt = $pdo->query("SELECT noticias.*, usuarios.email, usuarios.nombre FROM noticias JOIN usuarios ON noticias.user_id = usuarios.id $where ORDER BY fecha DESC LIMIT $comienzo, $num");
 // "SELECT * FROM noticias WHERE categoria='noticias' ORDER BY fecha DESC LIMIT 0, 3"
 $noticias = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
