@@ -6,8 +6,7 @@ use Firebase\JWT\Key;
 
 function verificarToken()
 {
-    $hashPropio = 'gjsadhfhsbjf&183kdsjfghmgnfdnqhwlqhwqpwqoopiwyrwqjmwqkjmmjqlwmje'; // Cambia esto por tu propia clave secreta
-
+    global $hashPropio;
     $headers = getallheaders();
     $authorization = $headers['Authorization'] ?? $headers['authorization'] ?? null;
 
