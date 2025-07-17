@@ -6,6 +6,7 @@ export default function NoticiasLista() {
   const [comienzo, setComienzo] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hayMas, setHayMas] = useState(true);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   // Usar la variable de entorno para la URL de la API
   // que tenemos en .env
   const API_URL = import.meta.env.VITE_API_URL;
@@ -14,7 +15,8 @@ export default function NoticiasLista() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}api/?comienzo=${comienzo}`);
+      const categoriaParam = categoriaSeleccionada ? `&categoria=${categoriaSeleccionada}` : "";
+      const res = await fetch(`${API_URL}api/?comienzo=${comienzo}${categoriaParam}`);
       const data = await res.json();
 
       if (data.length === 0) {
@@ -43,7 +45,7 @@ export default function NoticiasLista() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [categoriaSeleccionada]);
 
   // Usamos un ref para el elemento de carga
   const loader = useRef(null);
@@ -82,9 +84,17 @@ export default function NoticiasLista() {
             <p className="text-sm text-gray-600 mb-2">
               Por <span className="font-medium">{n.nombre}</span> · {n.fecha?.split(" ")[0]}
             </p>
-            <a href={`/?categoria=${n.categoria}`} className="text-blue-600 text-sm block mb-2">
+            <button
+              onClick={() => {
+                setNoticias([]); // limpiar noticias anteriores
+                setComienzo(0);
+                setHayMas(true);
+                setCategoriaSeleccionada(n.categoria);
+              }}
+              className="text-blue-600 text-sm block mb-2 hover:underline"
+            >
               #{n.categoria}
-            </a>
+           </button>
             <a
               href={`/noticia/${n.id}`}
               className="inline-block text-sm text-blue-500 hover:underline"
