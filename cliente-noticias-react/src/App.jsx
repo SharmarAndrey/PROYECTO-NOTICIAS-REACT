@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 import NoticiasLista from "./noticiasLista";
+//import NoticiasDetalle from './NoticiasDetalle'
 
 function App() {
   return (

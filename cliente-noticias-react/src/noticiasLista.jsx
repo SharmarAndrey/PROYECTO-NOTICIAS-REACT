@@ -7,6 +7,7 @@ export default function NoticiasLista() {
   const [loading, setLoading] = useState(false);
   const [hayMas, setHayMas] = useState(true);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+  const [noticiaSeleccionada, setNoticiaSeleccionada] = useState(null);
   // Usar la variable de entorno para la URL de la API
   // que tenemos en .env
   const API_URL = import.meta.env.VITE_API_URL;
@@ -34,6 +35,13 @@ export default function NoticiasLista() {
     }
 
     setLoading(false);
+  };
+
+  const verDetalle = (id) => {
+    const encontrada = noticias.find(n => n.id === id);
+    if (encontrada) {
+      setNoticiaSeleccionada(encontrada);
+    }
   };
 
   let mounted = true;
@@ -95,12 +103,12 @@ export default function NoticiasLista() {
             >
               #{n.categoria}
            </button>
-            <a
-              href={`/noticia/${n.id}`}
+            <button
+              onClick={() => verDetalle(n.id)}
               className="inline-block text-sm text-blue-500 hover:underline"
             >
               Ver más →
-            </a>
+            </button>
           </div>
         ))}
       </div>
@@ -108,6 +116,29 @@ export default function NoticiasLista() {
       <div ref={loader} className="h-12 flex items-center justify-center">
         {loading && <p className="text-gray-500">Cargando...</p>}
       </div>
+
+      {noticiaSeleccionada && (
+        <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
+          <div className="max-w-3xl mx-auto px-4 py-6 relative">
+            <button
+              onClick={() => setNoticiaSeleccionada(null)}
+              className="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl font-bold"
+            >
+              ←
+            </button>
+            <img
+              src={API_URL + noticiaSeleccionada.foto || "https://via.placeholder.com/600x300?text=Sin+imagen"}
+              alt={noticiaSeleccionada.titulo}
+              className="w-full h-64 object-cover rounded mb-6"
+            />
+            <h2 className="text-3xl font-bold mb-4">{noticiaSeleccionada.titulo}</h2>
+            <p className="text-gray-700 mb-6 whitespace-pre-line">{noticiaSeleccionada.descripcion}</p>
+            <p className="text-sm text-gray-600">
+              Por {noticiaSeleccionada.nombre} · {noticiaSeleccionada.fecha?.split(" ")[0]}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
