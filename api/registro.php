@@ -17,18 +17,20 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         try {
             $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)");
             $stmt->execute([$nombre, $email, $pass]);
-            echo "Usuario insertado con éxito";
+            http_response_code(201); // Created
+            exit;
         }catch(Exception $e){
             http_response_code(500);
-            echo "Hubo algún problema al insertar el usuario: " . $e;
+            $errorGeneral = "Hubo algún problema al insertar el usuario: " . $e;
         }
     }else{
         http_response_code(400);
-        echo "Faltan parámetros obligatorios";
+        $errorGeneral = "Faltan parámetros obligatorios";
     }
 } else{
         http_response_code(405); // Método no soportado
-        echo "Método no soportado";
+        $errorGeneral = "Método no soportado";
 }
+echo json_encode(["message" => $errorGeneral]);
 exit;
 
