@@ -1,9 +1,8 @@
 <?php
-require_once "config.php"; // Configuración y clave secreta para JWT
-require_once "functions.php";
-require_once "conexion.php";
-require_once __DIR__ . '/../vendor/autoload.php';
 
+require_once "functions.php";
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once "conexion.php";
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 

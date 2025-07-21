@@ -5,9 +5,11 @@ import NoticiasLista from "./noticiasLista";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Registro from "./pages/Registro";
+import Login from "./pages/Login";
 // ... otros imports
 
 function App() {
+  
   const [user, setUser] = useState(null); // o traer desde localStorage si ya hay login persistente
 
   const handleLogout = () => {
@@ -22,6 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<NoticiasLista />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/login" element={<Login />} />
           {/* otras rutas */}
         </Routes>
       </main>
