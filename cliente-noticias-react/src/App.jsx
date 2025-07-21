@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NoticiasLista from "./noticiasLista";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Registro from "./pages/Registro";
 // ... otros imports
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<NoticiasLista />} />
+          <Route path="/registro" element={<Registro />} />
           {/* otras rutas */}
         </Routes>
       </main>

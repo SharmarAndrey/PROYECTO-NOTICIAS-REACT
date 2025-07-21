@@ -17,11 +17,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         try {
             $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)");
             $stmt->execute([$nombre, $email, $pass]);
-            http_response_code(201); // Created
-            exit;
+            if ($stmt->rowCount() == 0) {
+                http_response_code(409);
+                $errorGeneral = "El usuario ya existe";
+            }else{
+                http_response_code(200); // Created
+                exit;
+            }
         }catch(Exception $e){
-            http_response_code(500);
-            $errorGeneral = "Hubo algún problema al insertar el usuario: " . $e;
+            http_response_code(409);
+            $errorGeneral = "El usuario ya existe";
         }
     }else{
         http_response_code(400);
