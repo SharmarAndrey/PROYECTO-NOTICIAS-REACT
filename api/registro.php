@@ -21,7 +21,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
                 http_response_code(409);
                 $errorGeneral = "El usuario ya existe";
             }else{
-                http_response_code(200); // Created
+                http_response_code(201); // Created
+                echo json_encode(["message" => "Usuario registrado con éxito"]);
                 exit;
             }
         }catch(Exception $e){

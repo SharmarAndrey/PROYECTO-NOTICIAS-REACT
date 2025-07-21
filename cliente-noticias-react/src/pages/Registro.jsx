@@ -31,14 +31,14 @@ export default function Registro() {
              });
             const data = await res.json();
             if (res.ok) {
-               // setError("Usuario insertadio con éxito");
+               // setError("Usuario insertado con éxito <a href='/login'>Iniciar sesión</a>");
                 
                 navigate("/login");
             } else {
                 setError(data.message || "Error en el registro");
             }
         } catch (err) {
-            setError("Error de conexión");
+            setError("Hubo añgún error");
         }
     };
 
