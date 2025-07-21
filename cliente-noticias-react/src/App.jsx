@@ -9,8 +9,10 @@ import Login from "./pages/Login";
 // ... otros imports
 
 function App() {
-  
-  const [user, setUser] = useState(null); // o traer desde localStorage si ya hay login persistente
+  const [user, setUser] = useState(() => {
+    const userGuardado = localStorage.getItem("user");
+    return userGuardado ? JSON.parse(userGuardado) : null;
+  }); // o traer desde localStorage si ya hay login persistente
 
   const handleLogout = () => {
     localStorage.removeItem("token");

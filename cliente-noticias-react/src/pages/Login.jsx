@@ -30,7 +30,7 @@ export default function Login() {
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("user", JSON.stringify(data.user)); // Establecer 
                // alert(localStorage.getItem("user"));// Obtener.
-               // navigate("/"); // volver al feed
+                navigate("/"); // volver al feed
                 setError("Bienvendio" + data.user.nombre);
                 
             } else {

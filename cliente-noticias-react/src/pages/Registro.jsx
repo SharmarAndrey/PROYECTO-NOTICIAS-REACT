@@ -31,9 +31,9 @@ export default function Registro() {
              });
             const data = await res.json();
             if (res.ok) {
-                setError("Usuario insertadio con éxito");
+               // setError("Usuario insertadio con éxito");
                 
-               // navigate("/login");
+                navigate("/login");
             } else {
                 setError(data.message || "Error en el registro");
             }
